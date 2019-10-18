@@ -1,0 +1,7 @@
+C:\Users\neand\Documents\Git\ProgramAcad\ProgramAcad\src\ProgramAcad.Common\bin\Debug\netcoreapp3.0\ProgramAcad.Common.deps.json
+C:\Users\neand\Documents\Git\ProgramAcad\ProgramAcad\src\ProgramAcad.Common\bin\Debug\netcoreapp3.0\ProgramAcad.Common.dll
+C:\Users\neand\Documents\Git\ProgramAcad\ProgramAcad\src\ProgramAcad.Common\bin\Debug\netcoreapp3.0\ProgramAcad.Common.pdb
+C:\Users\neand\Documents\Git\ProgramAcad\ProgramAcad\src\ProgramAcad.Common\obj\Debug\netcoreapp3.0\ProgramAcad.Common.AssemblyInfoInputs.cache
+C:\Users\neand\Documents\Git\ProgramAcad\ProgramAcad\src\ProgramAcad.Common\obj\Debug\netcoreapp3.0\ProgramAcad.Common.AssemblyInfo.cs
+C:\Users\neand\Documents\Git\ProgramAcad\ProgramAcad\src\ProgramAcad.Common\obj\Debug\netcoreapp3.0\ProgramAcad.Common.dll
+C:\Users\neand\Documents\Git\ProgramAcad\ProgramAcad\src\ProgramAcad.Common\obj\Debug\netcoreapp3.0\ProgramAcad.Common.pdb

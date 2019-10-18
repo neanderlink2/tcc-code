@@ -1,0 +1,138 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\neand\\Documents\\Git\\ProgramAcad\\ProgramAcad\\src\\ProgramAcad.Domain\\ProgramAcad.Domain.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\neand\\Documents\\Git\\ProgramAcad\\ProgramAcad\\src\\ProgramAcad.Common\\ProgramAcad.Common.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\neand\\Documents\\Git\\ProgramAcad\\ProgramAcad\\src\\ProgramAcad.Common\\ProgramAcad.Common.csproj",
+        "projectName": "ProgramAcad.Common",
+        "projectPath": "C:\\Users\\neand\\Documents\\Git\\ProgramAcad\\ProgramAcad\\src\\ProgramAcad.Common\\ProgramAcad.Common.csproj",
+        "packagesPath": "C:\\Users\\neand\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\neand\\Documents\\Git\\ProgramAcad\\ProgramAcad\\src\\ProgramAcad.Common\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\neand\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.0": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.0": {
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[3.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\neand\\Documents\\Git\\ProgramAcad\\ProgramAcad\\src\\ProgramAcad.Domain\\ProgramAcad.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\neand\\Documents\\Git\\ProgramAcad\\ProgramAcad\\src\\ProgramAcad.Domain\\ProgramAcad.Domain.csproj",
+        "projectName": "ProgramAcad.Domain",
+        "projectPath": "C:\\Users\\neand\\Documents\\Git\\ProgramAcad\\ProgramAcad\\src\\ProgramAcad.Domain\\ProgramAcad.Domain.csproj",
+        "packagesPath": "C:\\Users\\neand\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\neand\\Documents\\Git\\ProgramAcad\\ProgramAcad\\src\\ProgramAcad.Domain\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\neand\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.0": {
+            "projectReferences": {
+              "C:\\Users\\neand\\Documents\\Git\\ProgramAcad\\ProgramAcad\\src\\ProgramAcad.Common\\ProgramAcad.Common.csproj": {
+                "projectPath": "C:\\Users\\neand\\Documents\\Git\\ProgramAcad\\ProgramAcad\\src\\ProgramAcad.Common\\ProgramAcad.Common.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.0": {
+          "dependencies": {
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[3.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
