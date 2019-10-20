@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using ProgramAcad.Common.Extensions;
-using ProgramAcad.Common.Models;
 using ProgramAcad.Common.Repository;
 using ProgramAcad.Infra.Data.Context;
 using System;
@@ -15,14 +14,14 @@ using System.Threading.Tasks;
 
 namespace ProgramAcad.Infra.Data.Repository
 {
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
+    public class Repository<TModel> : IRepository<TModel> where TModel : class
     {
-        private readonly DbSet<TEntity> _dbSet;
+        private readonly DbSet<TModel> _dbSet;
 
         protected Repository(ProgramAcadContext dbContext)
         {
             DataContext = dbContext;
-            _dbSet = DataContext.Set<TEntity>();
+            _dbSet = DataContext.Set<TModel>();
         }
 
         public ProgramAcadContext DataContext { get; private set; }
@@ -54,19 +53,19 @@ namespace ProgramAcad.Infra.Data.Repository
 
         #region RawSql
 
-        public virtual IQueryable<TEntity> Query(string sql)
+        public virtual IQueryable<TModel> Query(string sql)
         {
-            return DataContext.Database.GetDbConnection().Query<TEntity>(sql).AsQueryable();
+            return DataContext.Database.GetDbConnection().Query<TModel>(sql).AsQueryable();
         }
         #endregion
 
         #region Add
-        public virtual async Task AddAsync(TEntity entity)
+        public virtual async Task AddAsync(TModel entity)
         {
             await _dbSet.AddAsync(entity);
         }
 
-        public virtual Task AddRangeAsync(IEnumerable<TEntity> entities)
+        public virtual Task AddRangeAsync(IEnumerable<TModel> entities)
         {
             return _dbSet.AddRangeAsync(entities);
         }
@@ -75,13 +74,13 @@ namespace ProgramAcad.Infra.Data.Repository
 
         #region Update
 
-        public virtual Task UpdateAsync(TEntity entity)
+        public virtual Task UpdateAsync(TModel entity)
         {
             _dbSet.Update(entity);
             return Task.CompletedTask;
         }
 
-        public virtual Task UpdateRangeAsync(IEnumerable<TEntity> entities)
+        public virtual Task UpdateRangeAsync(IEnumerable<TModel> entities)
         {
             _dbSet.UpdateRange(entities);
             return Task.CompletedTask;
@@ -91,13 +90,13 @@ namespace ProgramAcad.Infra.Data.Repository
 
         #region Delete
 
-        public virtual Task DeleteAsync(Expression<Func<TEntity, bool>> where)
+        public virtual Task DeleteAsync(Expression<Func<TModel, bool>> where)
         {
             _dbSet.Where(where).ToList().ForEach(obj => _dbSet.Remove(obj));
             return Task.CompletedTask;
         }
 
-        public virtual Task DeleteAsync(TEntity entity)
+        public virtual Task DeleteAsync(TModel entity)
         {
             _dbSet.Remove(entity);
             return Task.CompletedTask;
@@ -107,136 +106,136 @@ namespace ProgramAcad.Infra.Data.Repository
 
         #region Get
 
-        public virtual TEntity Get(Expression<Func<TEntity, bool>> where, bool activeOnly = true)
+        public virtual TModel Get(Expression<Func<TModel, bool>> where)
         {
-            return _dbSet.Where(x => activeOnly ? x.Status : true).FirstOrDefault(where);
+            return _dbSet.FirstOrDefault(where);
         }
 
-        public virtual async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> where, bool activeOnly = true)
+        public virtual async Task<TModel> GetAsync(Expression<Func<TModel, bool>> where)
         {
-            return await _dbSet.Where(x => activeOnly ? x.Status : true).FirstOrDefaultAsync(where);
+            return await _dbSet.FirstOrDefaultAsync(where);
         }
 
-        public virtual TEntity Get(Expression<Func<TEntity, bool>> where, bool activeOnly = true, params Expression<Func<TEntity, object>>[] include)
+        public virtual TModel Get(Expression<Func<TModel, bool>> where, params Expression<Func<TModel, object>>[] include)
         {
-            return _dbSet.Where(x => activeOnly ? x.Status : true).IncludeMultiple(include).FirstOrDefault(where);
+            return _dbSet.IncludeMultiple(include).FirstOrDefault(where);
         }
 
-        public virtual async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> where, bool activeOnly = true, params Expression<Func<TEntity, object>>[] include)
+        public virtual async Task<TModel> GetAsync(Expression<Func<TModel, bool>> where, params Expression<Func<TModel, object>>[] include)
         {
-            return await _dbSet.Where(x => activeOnly ? x.Status : true).IncludeMultiple(include).FirstOrDefaultAsync(where);
+            return await _dbSet.IncludeMultiple(include).FirstOrDefaultAsync(where);
         }
 
-        public virtual TEntity Get(Expression<Func<TEntity, bool>> where, bool activeOnly = true, params string[] include)
+        public virtual TModel Get(Expression<Func<TModel, bool>> where, params string[] include)
         {
-            return _dbSet.Where(x => activeOnly ? x.Status : true).IncludeMultiple(include).FirstOrDefault(where);
+            return _dbSet.IncludeMultiple(include).FirstOrDefault(where);
         }
 
-        public virtual async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> where, bool activeOnly = true, params string[] include)
+        public virtual async Task<TModel> GetAsync(Expression<Func<TModel, bool>> where, params string[] include)
         {
-            return await _dbSet.Where(x => activeOnly ? x.Status : true).IncludeMultiple(include).FirstOrDefaultAsync(where);
+            return await _dbSet.IncludeMultiple(include).FirstOrDefaultAsync(where);
         }
 
         #endregion Get
 
         #region GetSingle
 
-        public virtual TEntity GetSingle(Expression<Func<TEntity, bool>> where, bool activeOnly = true)
+        public virtual TModel GetSingle(Expression<Func<TModel, bool>> where)
         {
-            return _dbSet.Where(x => activeOnly ? x.Status : true).SingleOrDefault(where);
+            return _dbSet.SingleOrDefault(where);
         }
 
-        public virtual async Task<TEntity> GetSingleAsync(Expression<Func<TEntity, bool>> where, bool activeOnly = true)
+        public virtual async Task<TModel> GetSingleAsync(Expression<Func<TModel, bool>> where)
         {
-            return await _dbSet.Where(x => activeOnly ? x.Status : true).SingleOrDefaultAsync(where);
+            return await _dbSet.SingleOrDefaultAsync(where);
         }
 
-        public virtual TEntity GetSingle(Expression<Func<TEntity, bool>> where, bool activeOnly = true, params Expression<Func<TEntity, object>>[] include)
+        public virtual TModel GetSingle(Expression<Func<TModel, bool>> where, params Expression<Func<TModel, object>>[] include)
         {
-            return _dbSet.Where(x => activeOnly ? x.Status : true).IncludeMultiple(include).SingleOrDefault(where);
+            return _dbSet.IncludeMultiple(include).SingleOrDefault(where);
         }
 
-        public virtual async Task<TEntity> GetSingleAsync(Expression<Func<TEntity, bool>> where, bool activeOnly = true, params Expression<Func<TEntity, object>>[] include)
+        public virtual async Task<TModel> GetSingleAsync(Expression<Func<TModel, bool>> where, params Expression<Func<TModel, object>>[] include)
         {
-            return await _dbSet.Where(x => activeOnly ? x.Status : true).IncludeMultiple(include).SingleOrDefaultAsync(where);
+            return await _dbSet.IncludeMultiple(include).SingleOrDefaultAsync(where);
         }
 
-        public virtual TEntity GetSingle(Expression<Func<TEntity, bool>> where, bool activeOnly = true, params string[] include)
+        public virtual TModel GetSingle(Expression<Func<TModel, bool>> where, params string[] include)
         {
-            return _dbSet.Where(x => activeOnly ? x.Status : true).IncludeMultiple(include).SingleOrDefault(where);
+            return _dbSet.IncludeMultiple(include).SingleOrDefault(where);
         }
 
-        public virtual async Task<TEntity> GetSingleAsync(Expression<Func<TEntity, bool>> where, bool activeOnly = true, params string[] include)
+        public virtual async Task<TModel> GetSingleAsync(Expression<Func<TModel, bool>> where, params string[] include)
         {
-            return await _dbSet.Where(x => activeOnly ? x.Status : true).IncludeMultiple(include).SingleOrDefaultAsync(where);
+            return await _dbSet.IncludeMultiple(include).SingleOrDefaultAsync(where);
         }
 
         #endregion GetSingle
 
         #region GetAll
 
-        public virtual IQueryable<TEntity> GetAll(bool activeOnly = true)
+        public virtual IQueryable<TModel> GetAll()
         {
-            return _dbSet.Where(x => activeOnly ? x.Status : true).AsNoTracking();
+            return _dbSet.AsNoTracking();
         }
 
-        public virtual IQueryable<TEntity> GetAll(bool activeOnly = true, params Expression<Func<TEntity, object>>[] include)
+        public virtual IQueryable<TModel> GetAll(params Expression<Func<TModel, object>>[] include)
         {
-            return _dbSet.Where(x => activeOnly ? x.Status : true).AsNoTracking().IncludeMultiple(include);
+            return _dbSet.AsNoTracking().IncludeMultiple(include);
         }
 
-        public virtual IQueryable<TEntity> GetAll(bool activeOnly = true, params string[] include)
+        public virtual IQueryable<TModel> GetAll(params string[] include)
         {
-            return _dbSet.Where(x => activeOnly ? x.Status : true).AsNoTracking().IncludeMultiple(include);
+            return _dbSet.AsNoTracking().IncludeMultiple(include);
         }
 
-        public virtual Task<IQueryable<TEntity>> GetAllAsync(bool activeOnly = true)
+        public virtual Task<IQueryable<TModel>> GetAllAsync()
         {
-            return Task.FromResult(_dbSet.Where(x => activeOnly ? x.Status : true).AsNoTracking());
+            return Task.FromResult(_dbSet.AsNoTracking());
         }
 
-        public virtual Task<IQueryable<TEntity>> GetAllAsync(bool activeOnly = true, params Expression<Func<TEntity, object>>[] include)
+        public virtual Task<IQueryable<TModel>> GetAllAsync(params Expression<Func<TModel, object>>[] include)
         {
-            return Task.FromResult(_dbSet.Where(x => activeOnly ? x.Status : true).AsNoTracking().IncludeMultiple(include));
+            return Task.FromResult(_dbSet.AsNoTracking().IncludeMultiple(include));
         }
 
-        public virtual Task<IQueryable<TEntity>> GetAllAsync(bool activeOnly = true, params string[] include)
+        public virtual Task<IQueryable<TModel>> GetAllAsync(params string[] include)
         {
-            return Task.FromResult(_dbSet.Where(x => activeOnly ? x.Status : true).AsNoTracking().IncludeMultiple(include));
+            return Task.FromResult(_dbSet.AsNoTracking().IncludeMultiple(include));
         }
 
         #endregion GetAll
 
         #region GetMany
 
-        public virtual IQueryable<TEntity> GetMany(Expression<Func<TEntity, bool>> where, bool activeOnly = true)
+        public virtual IQueryable<TModel> GetMany(Expression<Func<TModel, bool>> where)
         {
-            return _dbSet.Where(x => activeOnly ? x.Status : true).Where(where);
+            return _dbSet.Where(where);
         }
 
-        public virtual IQueryable<TEntity> GetMany(Expression<Func<TEntity, bool>> where, bool activeOnly = true, params Expression<Func<TEntity, object>>[] include)
+        public virtual IQueryable<TModel> GetMany(Expression<Func<TModel, bool>> where, params Expression<Func<TModel, object>>[] include)
         {
-            return _dbSet.Where(x => activeOnly ? x.Status : true).IncludeMultiple(include).Where(where);
+            return _dbSet.IncludeMultiple(include).Where(where);
         }
 
-        public virtual IQueryable<TEntity> GetMany(Expression<Func<TEntity, bool>> where, bool activeOnly = true, params string[] include)
+        public virtual IQueryable<TModel> GetMany(Expression<Func<TModel, bool>> where, params string[] include)
         {
-            return _dbSet.Where(x => activeOnly ? x.Status : true).IncludeMultiple(include).Where(where);
+            return _dbSet.IncludeMultiple(include).Where(where);
         }
 
-        public virtual Task<IQueryable<TEntity>> GetManyAsync(Expression<Func<TEntity, bool>> where, bool activeOnly = true)
+        public virtual Task<IQueryable<TModel>> GetManyAsync(Expression<Func<TModel, bool>> where)
         {
-            return Task.FromResult(_dbSet.Where(x => activeOnly ? x.Status : true).Where(where));
+            return Task.FromResult(_dbSet.Where(where));
         }
 
-        public virtual Task<IQueryable<TEntity>> GetManyAsync(Expression<Func<TEntity, bool>> where, bool activeOnly = true, params Expression<Func<TEntity, object>>[] include)
+        public virtual Task<IQueryable<TModel>> GetManyAsync(Expression<Func<TModel, bool>> where, params Expression<Func<TModel, object>>[] include)
         {
-            return Task.FromResult(_dbSet.Where(x => activeOnly ? x.Status : true).IncludeMultiple(include).Where(where));
+            return Task.FromResult(_dbSet.IncludeMultiple(include).Where(where));
         }
 
-        public virtual Task<IQueryable<TEntity>> GetManyAsync(Expression<Func<TEntity, bool>> where, bool activeOnly = true, params string[] include)
+        public virtual Task<IQueryable<TModel>> GetManyAsync(Expression<Func<TModel, bool>> where, params string[] include)
         {
-            return Task.FromResult(_dbSet.Where(x => activeOnly ? x.Status : true).IncludeMultiple(include).Where(where));
+            return Task.FromResult(_dbSet.IncludeMultiple(include).Where(where));
         }
 
 
@@ -244,28 +243,28 @@ namespace ProgramAcad.Infra.Data.Repository
 
         #region Count
 
-        public virtual int Count(Expression<Func<TEntity, bool>> where = null, bool activeOnly = true)
+        public virtual int Count(Expression<Func<TModel, bool>> where = null)
         {
-            return _dbSet.Where(x => activeOnly ? x.Status : true).Count(where);
+            return _dbSet.Count(where);
         }
 
-        public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> where = null, bool activeOnly = true)
+        public virtual async Task<int> CountAsync(Expression<Func<TModel, bool>> where = null)
         {
-            return await _dbSet.Where(x => activeOnly ? x.Status : true).CountAsync(where);
+            return await _dbSet.CountAsync(where);
         }
 
         #endregion
 
         #region Any
 
-        public bool Any(Expression<Func<TEntity, bool>> where = null, bool activeOnly = true)
+        public bool Any(Expression<Func<TModel, bool>> where = null)
         {
-            return _dbSet.Where(x => activeOnly ? x.Status : true).Any(where);
+            return _dbSet.Any(where);
         }
 
-        public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> where = null, bool activeOnly = true)
+        public async Task<bool> AnyAsync(Expression<Func<TModel, bool>> where = null)
         {
-            return await _dbSet.Where(x => activeOnly ? x.Status : true).AnyAsync(where);
+            return await _dbSet.AnyAsync(where);
         }
 
         #endregion
