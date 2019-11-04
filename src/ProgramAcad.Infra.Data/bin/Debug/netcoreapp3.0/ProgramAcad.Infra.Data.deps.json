@@ -9,7 +9,6 @@
       "ProgramAcad.Infra.Data/1.0.0": {
         "dependencies": {
           "Dapper": "2.0.30",
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.0.0",
           "ProgramAcad.Domain": "1.0.0"
         },
         "runtime": {

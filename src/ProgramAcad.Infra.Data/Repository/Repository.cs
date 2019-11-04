@@ -1,20 +1,15 @@
 ﻿using Dapper;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using ProgramAcad.Common.Extensions;
-using ProgramAcad.Common.Repository;
+using ProgramAcad.Domain.Contracts;
 using ProgramAcad.Infra.Data.Context;
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Common;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace ProgramAcad.Infra.Data.Repository
 {
-    public class Repository<TModel> : IRepository<TModel> where TModel : class
+    public abstract class Repository<TModel> : IRepository<TModel> where TModel : class
     {
         private readonly DbSet<TModel> _dbSet;
 
@@ -26,247 +21,74 @@ namespace ProgramAcad.Infra.Data.Repository
 
         public ProgramAcadContext DataContext { get; private set; }
 
-        #region Transaction
-
-        public IDbContextTransaction BeginTransaction()
+        public Task AddAsync(TModel entity)
         {
-            return DataContext.Database.CurrentTransaction == null ? DataContext.Database.BeginTransaction(IsolationLevel.ReadUncommitted) : null;
+            return Task.Run(() => _dbSet.Add(entity));
         }
 
-        public IDbContextTransaction CurrentTransaction()
+        public bool Any(Expression<Func<TModel, bool>> condicao)
         {
-            return DataContext.Database.CurrentTransaction;
+            return _dbSet.Any(condicao);
         }
 
-        public void CommitTransaction(IDbContextTransaction transaction)
+        public Task<bool> AnyAsync(Expression<Func<TModel, bool>> condicao)
         {
-            if (transaction != null)
-                transaction.Commit();
+            return _dbSet.AnyAsync(condicao);
         }
 
-        public void UseTransaction(IDbContextTransaction transaction)
+        public int Count(Expression<Func<TModel, bool>> condicao = null)
         {
-            DataContext.Database.UseTransaction((DbTransaction)transaction);
+            return _dbSet.Count(condicao);
         }
 
-        #endregion Transaction
-
-        #region RawSql
-
-        public virtual IQueryable<TModel> Query(string sql)
+        public Task<int> CountAsync(Expression<Func<TModel, bool>> condicao = null)
         {
-            return DataContext.Database.GetDbConnection().Query<TModel>(sql).AsQueryable();
-        }
-        #endregion
-
-        #region Add
-        public virtual async Task AddAsync(TModel entity)
-        {
-            await _dbSet.AddAsync(entity);
+            return _dbSet.CountAsync(condicao);
         }
 
-        public virtual Task AddRangeAsync(IEnumerable<TModel> entities)
+        public Task DeleteAsync(TModel entity)
         {
-            return _dbSet.AddRangeAsync(entities);
+            return Task.Run(() => _dbSet.Remove(entity));
         }
 
-        #endregion Add
-
-        #region Update
-
-        public virtual Task UpdateAsync(TModel entity)
+        public IQueryable<TRetorno> FromSql<TRetorno>(string sql)
         {
-            _dbSet.Update(entity);
-            return Task.CompletedTask;
+            return DataContext.Database.GetDbConnection().Query<TRetorno>(sql).AsQueryable();
         }
 
-        public virtual Task UpdateRangeAsync(IEnumerable<TModel> entities)
+        public IQueryable<TModel> GetAll()
         {
-            _dbSet.UpdateRange(entities);
-            return Task.CompletedTask;
+            return _dbSet.AsQueryable();
         }
 
-        #endregion Update
-
-        #region Delete
-
-        public virtual Task DeleteAsync(Expression<Func<TModel, bool>> where)
+        public Task<IQueryable<TModel>> GetAllAsync()
         {
-            _dbSet.Where(where).ToList().ForEach(obj => _dbSet.Remove(obj));
-            return Task.CompletedTask;
+            return Task.Run(() => _dbSet.AsQueryable());
         }
 
-        public virtual Task DeleteAsync(TModel entity)
+        public IQueryable<TModel> GetMany(Expression<Func<TModel, bool>> condicao)
         {
-            _dbSet.Remove(entity);
-            return Task.CompletedTask;
+            return _dbSet.Where(condicao);
         }
 
-        #endregion Delete
+        public Task<IQueryable<TModel>> GetManyAsync(Expression<Func<TModel, bool>> condicao)
+        {
+            return Task.Run(() => _dbSet.Where(condicao));
+        }
 
-        #region Get
-
-        public virtual TModel Get(Expression<Func<TModel, bool>> where)
+        public TModel GetSingle(Expression<Func<TModel, bool>> where)
         {
             return _dbSet.FirstOrDefault(where);
         }
 
-        public virtual async Task<TModel> GetAsync(Expression<Func<TModel, bool>> where)
+        public Task<TModel> GetSingleAsync(Expression<Func<TModel, bool>> condicao)
         {
-            return await _dbSet.FirstOrDefaultAsync(where);
+            return _dbSet.FirstOrDefaultAsync(condicao);
         }
 
-        public virtual TModel Get(Expression<Func<TModel, bool>> where, params Expression<Func<TModel, object>>[] include)
+        public Task UpdateAsync(TModel entity)
         {
-            return _dbSet.IncludeMultiple(include).FirstOrDefault(where);
+            return Task.Run(() => _dbSet.Update(entity));
         }
-
-        public virtual async Task<TModel> GetAsync(Expression<Func<TModel, bool>> where, params Expression<Func<TModel, object>>[] include)
-        {
-            return await _dbSet.IncludeMultiple(include).FirstOrDefaultAsync(where);
-        }
-
-        public virtual TModel Get(Expression<Func<TModel, bool>> where, params string[] include)
-        {
-            return _dbSet.IncludeMultiple(include).FirstOrDefault(where);
-        }
-
-        public virtual async Task<TModel> GetAsync(Expression<Func<TModel, bool>> where, params string[] include)
-        {
-            return await _dbSet.IncludeMultiple(include).FirstOrDefaultAsync(where);
-        }
-
-        #endregion Get
-
-        #region GetSingle
-
-        public virtual TModel GetSingle(Expression<Func<TModel, bool>> where)
-        {
-            return _dbSet.SingleOrDefault(where);
-        }
-
-        public virtual async Task<TModel> GetSingleAsync(Expression<Func<TModel, bool>> where)
-        {
-            return await _dbSet.SingleOrDefaultAsync(where);
-        }
-
-        public virtual TModel GetSingle(Expression<Func<TModel, bool>> where, params Expression<Func<TModel, object>>[] include)
-        {
-            return _dbSet.IncludeMultiple(include).SingleOrDefault(where);
-        }
-
-        public virtual async Task<TModel> GetSingleAsync(Expression<Func<TModel, bool>> where, params Expression<Func<TModel, object>>[] include)
-        {
-            return await _dbSet.IncludeMultiple(include).SingleOrDefaultAsync(where);
-        }
-
-        public virtual TModel GetSingle(Expression<Func<TModel, bool>> where, params string[] include)
-        {
-            return _dbSet.IncludeMultiple(include).SingleOrDefault(where);
-        }
-
-        public virtual async Task<TModel> GetSingleAsync(Expression<Func<TModel, bool>> where, params string[] include)
-        {
-            return await _dbSet.IncludeMultiple(include).SingleOrDefaultAsync(where);
-        }
-
-        #endregion GetSingle
-
-        #region GetAll
-
-        public virtual IQueryable<TModel> GetAll()
-        {
-            return _dbSet.AsNoTracking();
-        }
-
-        public virtual IQueryable<TModel> GetAll(params Expression<Func<TModel, object>>[] include)
-        {
-            return _dbSet.AsNoTracking().IncludeMultiple(include);
-        }
-
-        public virtual IQueryable<TModel> GetAll(params string[] include)
-        {
-            return _dbSet.AsNoTracking().IncludeMultiple(include);
-        }
-
-        public virtual Task<IQueryable<TModel>> GetAllAsync()
-        {
-            return Task.FromResult(_dbSet.AsNoTracking());
-        }
-
-        public virtual Task<IQueryable<TModel>> GetAllAsync(params Expression<Func<TModel, object>>[] include)
-        {
-            return Task.FromResult(_dbSet.AsNoTracking().IncludeMultiple(include));
-        }
-
-        public virtual Task<IQueryable<TModel>> GetAllAsync(params string[] include)
-        {
-            return Task.FromResult(_dbSet.AsNoTracking().IncludeMultiple(include));
-        }
-
-        #endregion GetAll
-
-        #region GetMany
-
-        public virtual IQueryable<TModel> GetMany(Expression<Func<TModel, bool>> where)
-        {
-            return _dbSet.Where(where);
-        }
-
-        public virtual IQueryable<TModel> GetMany(Expression<Func<TModel, bool>> where, params Expression<Func<TModel, object>>[] include)
-        {
-            return _dbSet.IncludeMultiple(include).Where(where);
-        }
-
-        public virtual IQueryable<TModel> GetMany(Expression<Func<TModel, bool>> where, params string[] include)
-        {
-            return _dbSet.IncludeMultiple(include).Where(where);
-        }
-
-        public virtual Task<IQueryable<TModel>> GetManyAsync(Expression<Func<TModel, bool>> where)
-        {
-            return Task.FromResult(_dbSet.Where(where));
-        }
-
-        public virtual Task<IQueryable<TModel>> GetManyAsync(Expression<Func<TModel, bool>> where, params Expression<Func<TModel, object>>[] include)
-        {
-            return Task.FromResult(_dbSet.IncludeMultiple(include).Where(where));
-        }
-
-        public virtual Task<IQueryable<TModel>> GetManyAsync(Expression<Func<TModel, bool>> where, params string[] include)
-        {
-            return Task.FromResult(_dbSet.IncludeMultiple(include).Where(where));
-        }
-
-
-        #endregion GetMany
-
-        #region Count
-
-        public virtual int Count(Expression<Func<TModel, bool>> where = null)
-        {
-            return _dbSet.Count(where);
-        }
-
-        public virtual async Task<int> CountAsync(Expression<Func<TModel, bool>> where = null)
-        {
-            return await _dbSet.CountAsync(where);
-        }
-
-        #endregion
-
-        #region Any
-
-        public bool Any(Expression<Func<TModel, bool>> where = null)
-        {
-            return _dbSet.Any(where);
-        }
-
-        public async Task<bool> AnyAsync(Expression<Func<TModel, bool>> where = null)
-        {
-            return await _dbSet.AnyAsync(where);
-        }
-
-        #endregion
     }
 }

@@ -1,23 +1,24 @@
-﻿using System.ComponentModel;
+﻿using ProgramAcad.Common.Attributes;
+using System.ComponentModel;
 
-namespace ProgramAcad.Common.Enums
+namespace ProgramAcad.Domain.Entities
 {
     public enum LinguagensProgramacao
     {
         [Description("csharp")]
-        [AmbientValue("2")]
+        [CompilerType("2")]
         CSharp = 1,
 
         [Description("python3")]
-        [AmbientValue("1")]
+        [CompilerType("1")]
         Python = 2,
 
         [Description("c")]
-        [AmbientValue("2")]
+        [CompilerType("2")]
         C = 3,
 
         [Description("java")]
-        [AmbientValue("2")]
+        [CompilerType("2")]
         Java = 4
     }
 }

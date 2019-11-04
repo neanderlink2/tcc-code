@@ -870,7 +870,6 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.0": [
       "Dapper >= 2.0.30",
-      "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 3.0.0",
       "ProgramAcad.Domain >= 1.0.0"
     ]
   },
@@ -925,10 +924,6 @@
           "Dapper": {
             "target": "Package",
             "version": "[2.0.30, )"
-          },
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
-            "target": "Package",
-            "version": "[3.0.0, )"
           }
         },
         "imports": [

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
-using ProgramAcad.Common.Enums;
 using ProgramAcad.Common.Extensions;
+using ProgramAcad.Domain.Entities;
 using ProgramAcad.PoC.Compiler.JDoodle.Models;
 using System;
 using System.Collections.Generic;
@@ -32,7 +32,7 @@ namespace ProgramAcad.PoC.Compiler
                 Linguagem = language.GetDescription(),
                 Script = code,
                 Versao = language.GetAmbientValue(),
-                Entradas = entradas.Aggregate((prev, str) => $"{prev}\n{str}")
+                Entradas = entradas.Any() ? entradas.Aggregate((prev, str) => $"{prev}\n{str}") : ""
             });
 
             var content = new StringContent(options);

@@ -1,4 +1,4 @@
-﻿using ProgramAcad.Common.Enums;
+﻿using ProgramAcad.Domain.Entities;
 using ProgramAcad.PoC.Compiler.JDoodle.Models;
 using System;
 using System.Threading.Tasks;
@@ -15,21 +15,21 @@ namespace ProgramAcad.PoC.Compiler
             var csharp = await CompilarCSharp(client);
             var java = await CompilarJava(client);
             var python = await CompilarPython(client);
-
+            
             Console.WriteLine("E os resultados das compilações são: ");
 
             Console.WriteLine(@$"
-C# : Tempo de CPU - {csharp.CpuTime}
+C# : Tempo de CPU - {csharp.CpuTime}s
 Saída: {csharp.Output}");
 
             Console.WriteLine("-----------------------------------------------------");
             Console.WriteLine(@$"
-Java : Tempo de CPU - {java.CpuTime}
+Java : Tempo de CPU - {java.CpuTime}s
 Saída: {java.Output}");
 
             Console.WriteLine("-----------------------------------------------------");
             Console.WriteLine(@$"
-Python : Tempo de CPU - {python.CpuTime}
+Python : Tempo de CPU - {python.CpuTime}s
 Saída: {python.Output}");
 
             Console.ReadKey();
@@ -41,38 +41,34 @@ Saída: {python.Output}");
                 using System;
                 public class Program {
                     public static void Main(string[] args) {
-                        Console.WriteLine(""Olá mundo"");
-                        var resposta = Console.ReadLine();
-                        Console.WriteLine($""{resposta}"");
-                        var resposta2 = Console.ReadLine();
-                        Console.WriteLine($""{resposta2}"");
+                        Console.WriteLine(""Ola mundo"");
+                        for (int i = 0; i < 100; i++)
+                        {
+                            Console.Write(i + "", "");
+                        }
                     }
-                }", new string[] { "C#", "Muito amor <3" }, LinguagensProgramacao.CSharp);
+                }", new string[] {  }, LinguagensProgramacao.CSharp);
         }
 
         private static async Task<CompilerResponse> CompilarJava(CompilerClient client)
         {
-            return await client.Compile(@"
-                import java.util.*;
+            return await client.Compile(@"                
                 public class Main {
-                    public static void main(String[] args) {
-                        Scanner leitor = new Scanner(System.in);
-                        System.out.println(""Primeira linha"");
-                        String resposta = leitor.nextLine();
-                        System.out.println(resposta);
-                        String resposta2 = leitor.nextLine();
-                        System.out.println(resposta2);
+                    public static void main(String[] args) {   
+                        System.out.println(""Ola mundo"");
+                        for (int i = 0; i < 100; i++)
+                        {
+                            System.out.print(i + "", "");
+                        }
                     }
-                }", new string[] { "Java", "É pesado" }, LinguagensProgramacao.Java);
+                }", Array.Empty<string>(), LinguagensProgramacao.Java);
         }
 
         private static async Task<CompilerResponse> CompilarPython(CompilerClient client)
         {
             return await client.Compile(@"print('Ola mundo');
-resposta = input('');
-print(resposta);
-resposta2 = input('');
-print(resposta2);", new string[] { "Python", "Pq nao?" }, LinguagensProgramacao.Python);
+for x in range(100):
+    print('{}, '.format(x), end = '');", new string[] {  }, LinguagensProgramacao.Python);
         }
     }
 }
