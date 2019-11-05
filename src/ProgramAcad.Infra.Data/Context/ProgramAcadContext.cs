@@ -6,6 +6,13 @@ namespace ProgramAcad.Infra.Data.Context
     {
         public ProgramAcadContext(DbContextOptions options) : base(options)
         {
+
+        }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.ApplyConfigurationsFromAssembly(GetType().Assembly);
+            base.OnModelCreating(builder);
+
         }
     }
 }

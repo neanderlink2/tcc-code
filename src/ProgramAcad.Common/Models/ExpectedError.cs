@@ -11,6 +11,12 @@ namespace ProgramAcad.Common.Models
             Detail = detail;
         }
 
+        public ExpectedError(HttpStatusCode statusCode, string error)
+        {
+            StatusCode = statusCode;            
+            Detail = error;
+        }
+
         public HttpStatusCode StatusCode { get; protected set; }
         public string Source { get; protected set; }
         public string Detail { get; protected set; }

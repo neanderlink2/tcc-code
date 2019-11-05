@@ -21,6 +21,6 @@ namespace ProgramAcad.Domain.Entities
         public Guid IdAlgoritmo { get; protected set; }
 
         public Algoritmo AlgoritmoVinculado { get; set; }
-        public ICollection<CasoTeste> ExecucoesTeste { get; set; }
+        public ICollection<ExecucaoTeste> ExecucoesTeste { get; set; }
     }
 }

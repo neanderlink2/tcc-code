@@ -1,44 +1,54 @@
 ﻿using Newtonsoft.Json;
-using System.Collections.Generic;
 
-namespace ProgramAcad.PoC.Compiler.JDoodle.Models
+namespace ProgramAcad.Services.Modules.Compiling.Models
 {
-    public class CompilerOptions
+    internal class CompilerOptions
     {
+        public CompilerOptions(string clientId, string clientSecret, string script, string linguagem,
+            string versao, string entradas)
+        {
+            ClientId = clientId;
+            ClientSecret = clientSecret;
+            Script = script;
+            Linguagem = linguagem;
+            Versao = versao;
+            Entradas = entradas;
+        }
+
         /// <summary>
         /// Código identificador para utilizar a API
         /// </summary>
         [JsonProperty("clientId")]
-        public string ClientId { get; set; }
+        public string ClientId { get; protected set; }
 
         /// <summary>
         /// Código secreto para utilizar a API.
         /// </summary>
         [JsonProperty("clientSecret")]
-        public string ClientSecret { get; set; }
+        public string ClientSecret { get; protected set; }
 
         /// <summary>
         /// Código que será executa.
         /// </summary>
         [JsonProperty("script")]
-        public string Script { get; set; }
+        public string Script { get; protected set; }
 
         /// <summary>
         /// Linguagem de programação
         /// </summary>
         [JsonProperty("language")]
-        public string Linguagem { get; set; }
+        public string Linguagem { get; protected set; }
 
         /// <summary>
         /// Versão do compilador
         /// </summary>
         [JsonProperty("versionIndex")]
-        public string Versao { get; set; }
+        public string Versao { get; protected set; }
 
         /// <summary>
         /// Entradas para o algoritmo. Cada entrada deve estar separada por \n.
         /// </summary>
         [JsonProperty("stdin")]
-        public string Entradas { get; set; }
+        public string Entradas { get; protected set; }
     }
 }

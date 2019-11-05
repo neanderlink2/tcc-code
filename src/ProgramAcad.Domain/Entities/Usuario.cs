@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ProgramAcad.Domain.Entities
 {
@@ -9,9 +10,10 @@ namespace ProgramAcad.Domain.Entities
             Id = Guid.NewGuid();
             DataCriacao = DateTime.Now;
             IsAtivo = true;
+            Role = "ESTUDANTE";
             Email = email;
             Nickname = nickname;
-            Cpf = cpf;            
+            Cpf = cpf;
         }
 
         public Guid Id { get; protected set; }
@@ -22,8 +24,12 @@ namespace ProgramAcad.Domain.Entities
         public string Cep { get; protected set; }
         public string Sexo { get; protected set; }
         public int Pontos { get; protected set; }
+        public string Role { get; protected set; }
         public DateTime DataCriacao { get; protected set; }
         public bool IsAtivo { get; protected set; }
+
+        public ICollection<AlgoritmoResolvido> AlgoritmosResolvidos { get; set; }
+        public ICollection<ExecucaoTeste> TestesExecutados { get; set; }
 
         public virtual void Deactivate()
         {

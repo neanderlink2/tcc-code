@@ -1,5 +1,6 @@
 ﻿using ProgramAcad.Domain.Entities;
-using ProgramAcad.PoC.Compiler.JDoodle.Models;
+using ProgramAcad.Services.Modules.Compiling;
+using ProgramAcad.Services.Modules.Compiling.Models;
 using System;
 using System.Threading.Tasks;
 
@@ -10,7 +11,7 @@ namespace ProgramAcad.PoC.Compiler
         static async Task Main(string[] args)
         {
             Console.WriteLine("Começando a compilação dos códigos...");
-            var client = new CompilerClient();
+            var client = new CompilerApiClient();
 
             var csharp = await CompilarCSharp(client);
             var java = await CompilarJava(client);
@@ -35,7 +36,7 @@ Saída: {python.Output}");
             Console.ReadKey();
         }
 
-        private static async Task<CompilerResponse> CompilarCSharp(CompilerClient client)
+        private static async Task<CompilerResponse> CompilarCSharp(CompilerApiClient client)
         {
             return await client.Compile(@"
                 using System;
@@ -50,7 +51,7 @@ Saída: {python.Output}");
                 }", new string[] {  }, LinguagensProgramacao.CSharp);
         }
 
-        private static async Task<CompilerResponse> CompilarJava(CompilerClient client)
+        private static async Task<CompilerResponse> CompilarJava(CompilerApiClient client)
         {
             return await client.Compile(@"                
                 public class Main {
@@ -64,7 +65,7 @@ Saída: {python.Output}");
                 }", Array.Empty<string>(), LinguagensProgramacao.Java);
         }
 
-        private static async Task<CompilerResponse> CompilarPython(CompilerClient client)
+        private static async Task<CompilerResponse> CompilarPython(CompilerApiClient client)
         {
             return await client.Compile(@"print('Ola mundo');
 for x in range(100):

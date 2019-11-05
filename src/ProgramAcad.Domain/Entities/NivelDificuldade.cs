@@ -17,7 +17,6 @@ namespace ProgramAcad.Domain.Entities
         public string Descricao { get; protected set; }
         public int PontosReceber { get; protected set; }
 
-        public ICollection<Algoritmo> AlgoritmosDesseNivel { get; set; }
-        public ICollection<ExecucaoTeste> TestesExecutados { get; set; }
+        public ICollection<Algoritmo> AlgoritmosDesseNivel { get; set; }        
     }
 }
