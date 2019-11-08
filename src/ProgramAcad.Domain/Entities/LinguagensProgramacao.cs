@@ -10,7 +10,7 @@ namespace ProgramAcad.Domain.Entities
         CSharp = 1,
 
         [Description("python3")]
-        [CompilerType("1")]
+        [CompilerType("2")]
         Python = 2,
 
         [Description("c")]

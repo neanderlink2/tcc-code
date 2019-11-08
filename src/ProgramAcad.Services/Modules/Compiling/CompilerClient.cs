@@ -5,6 +5,7 @@ using ProgramAcad.Domain.Entities;
 using ProgramAcad.Domain.Exceptions;
 using ProgramAcad.Services.Interfaces.Clients;
 using ProgramAcad.Services.Modules.Compiling.Models;
+using ProgramAcad.Services.Modules.Compiling.RefitInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,14 +17,17 @@ namespace ProgramAcad.Services.Modules.Compiling
 {
     public class CompilerApiClient : ICompilerApiClient
     {
-        private readonly HttpClient _httpClient;
+        private readonly ICompilerApiCall _compilerApiCall;
 
-        public CompilerApiClient()
+        //private readonly HttpClient _httpClient;
+
+        public CompilerApiClient(ICompilerApiCall compilerApiCall)
         {
-            _httpClient = new HttpClient
-            {
-                BaseAddress = new Uri("https://api.jdoodle.com/v1")
-            };
+            _compilerApiCall = compilerApiCall;
+            //_httpClient = new HttpClient
+            //{
+            //    BaseAddress = new Uri("https://api.jdoodle.com/v1")
+            //};
         }
 
         public async Task<CompilerResponse> Compile(string code, IEnumerable<string> entradas, LinguagensProgramacao language)
@@ -37,10 +41,11 @@ namespace ProgramAcad.Services.Modules.Compiling
                 entradas.Any() ? entradas.Aggregate((prev, str) => $"{prev}\n{str}") : "");
             var jsonOptions = JsonConvert.SerializeObject(options);
 
-            var content = new StringContent(jsonOptions);
-            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            //var content = new StringContent(jsonOptions);
+            //content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-            var response = await _httpClient.PostAsync("/execute", content);
+            //var response = await _httpClient.PostAsync("/execute", content);
+            var response = await _compilerApiCall.Execute(options);
 
             if (!response.IsSuccessStatusCode)
             {

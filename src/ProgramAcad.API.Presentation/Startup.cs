@@ -11,6 +11,8 @@ using ProgramAcad.Infra.IoC;
 using System.Reflection;
 using System;
 using System.IO;
+using Refit;
+using ProgramAcad.Services.Modules.Compiling.RefitInterfaces;
 
 namespace ProgramAcad.API.Presentation
 {
@@ -32,6 +34,15 @@ namespace ProgramAcad.API.Presentation
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(configs =>
+            {
+                configs.AddPolicy("AllowAnyOrigin", policy =>
+                {
+                    policy.AllowAnyOrigin();
+                    policy.AllowAnyMethod();
+                    policy.AllowAnyHeader();                    
+                });
+            });
             services.AddControllers();
             services.AddDbContext<ProgramAcadContext>(options =>
             {
@@ -44,6 +55,14 @@ namespace ProgramAcad.API.Presentation
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
+
+            services.AddRefitClient<ICompilerApiCall>()                        
+                        .ConfigureHttpClient(c =>
+                        {
+                            c.BaseAddress = new Uri("https://api.jdoodle.com/v1");
+                            c.Timeout = TimeSpan.FromMinutes(5);
+                            c.DefaultRequestHeaders.Remove("charset");                           
+                        });            
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -58,7 +77,7 @@ namespace ProgramAcad.API.Presentation
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseCors("AllowAnyOrigin");
             app.UseSwagger();
             app.UseSwaggerUI(configs =>
             {

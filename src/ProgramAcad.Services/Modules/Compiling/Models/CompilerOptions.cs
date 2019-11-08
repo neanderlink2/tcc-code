@@ -2,7 +2,7 @@
 
 namespace ProgramAcad.Services.Modules.Compiling.Models
 {
-    internal class CompilerOptions
+    public class CompilerOptions
     {
         public CompilerOptions(string clientId, string clientSecret, string script, string linguagem,
             string versao, string entradas)

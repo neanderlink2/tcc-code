@@ -11,27 +11,27 @@ namespace ProgramAcad.PoC.Compiler
         static async Task Main(string[] args)
         {
             Console.WriteLine("Começando a compilação dos códigos...");
-            var client = new CompilerApiClient();
+//            var client = new CompilerApiClient();
 
-            var csharp = await CompilarCSharp(client);
-            var java = await CompilarJava(client);
-            var python = await CompilarPython(client);
+//            var csharp = await CompilarCSharp(client);
+//            var java = await CompilarJava(client);
+//            var python = await CompilarPython(client);
             
-            Console.WriteLine("E os resultados das compilações são: ");
+//            Console.WriteLine("E os resultados das compilações são: ");
 
-            Console.WriteLine(@$"
-C# : Tempo de CPU - {csharp.CpuTime}s
-Saída: {csharp.Output}");
+//            Console.WriteLine(@$"
+//C# : Tempo de CPU - {csharp.CpuTime}s
+//Saída: {csharp.Output}");
 
-            Console.WriteLine("-----------------------------------------------------");
-            Console.WriteLine(@$"
-Java : Tempo de CPU - {java.CpuTime}s
-Saída: {java.Output}");
+//            Console.WriteLine("-----------------------------------------------------");
+//            Console.WriteLine(@$"
+//Java : Tempo de CPU - {java.CpuTime}s
+//Saída: {java.Output}");
 
-            Console.WriteLine("-----------------------------------------------------");
-            Console.WriteLine(@$"
-Python : Tempo de CPU - {python.CpuTime}s
-Saída: {python.Output}");
+//            Console.WriteLine("-----------------------------------------------------");
+//            Console.WriteLine(@$"
+//Python : Tempo de CPU - {python.CpuTime}s
+//Saída: {python.Output}");
 
             Console.ReadKey();
         }
